@@ -1,6 +1,7 @@
 import nltk
 import praw
 from decouple import config
+from django.conf import settings
 from newsapi import NewsApiClient
 from nltk.sentiment import SentimentIntensityAnalyzer
 from rest_framework import generics, status
@@ -78,7 +79,7 @@ class AnalyzeMarketTrendsView(generics.GenericAPIView):
         return Response(response_data, status=status.HTTP_200_OK)
 
     def get_news_articles(self, query, sort_by, language):
-        newsapi = NewsApiClient(api_key=config('NEWSAPI_KEY'))
+        newsapi = NewsApiClient(api_key=settings.NEWSAPI_KEY)
         return newsapi.get_everything(q=query, sort_by=sort_by, language=language)
 
     def analyze_articles(self, articles):
@@ -128,9 +129,9 @@ class AnalyzeRedditDataView(generics.GenericAPIView):
 
     def analyze_reddit_data(self, keyword, limit):
         reddit = praw.Reddit(
-                client_id=config('REDDIT_CLIENT_ID'),
-                client_secret=config('REDDIT_CLIENT_SECRET'),
-                user_agent=config('REDDIT_USER_AGENT')
+                client_id=settings.REDDIT_CLIENT_ID,
+                client_secret=settings.REDDIT_CLIENT_SECRET,
+                user_agent=settings.REDDIT_USER_AGENT
         )
 
         nltk.download('vader_lexicon')
