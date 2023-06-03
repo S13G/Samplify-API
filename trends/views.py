@@ -1,6 +1,5 @@
 import nltk
 import praw
-from decouple import config
 from django.conf import settings
 from newsapi import NewsApiClient
 from nltk.sentiment import SentimentIntensityAnalyzer
@@ -37,7 +36,8 @@ class AnalyzeMarketTrendsView(generics.GenericAPIView):
             insights = self.analyze_articles(articles)
 
             # Word Frequencies and Vectorization
-            text_data = [article['title'] + ' ' + article['description'] for article in articles]
+            text_data = [article['title'] + ' ' + article['description'] for article in articles if
+                         article['title'] and article['description']]
 
             vectorizer = CountVectorizer()
             vectorized_data = vectorizer.fit_transform(text_data)
