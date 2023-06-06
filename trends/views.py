@@ -177,9 +177,18 @@ class AnalyzeRedditDataView(generics.GenericAPIView):
             insights.append(insight)
 
         text_data = titles + descriptions
+        print(text_data)
+
+        if not text_data:
+            response_data = {
+                "message": "No data available for analysis",
+                "status": "success"
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
 
         vectorizer = CountVectorizer()
         vectorized_data = vectorizer.fit_transform(text_data)
+
         feature_names = vectorizer.get_feature_names_out()
 
         word_frequencies = vectorized_data.sum(axis=0)
