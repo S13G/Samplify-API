@@ -177,7 +177,6 @@ class AnalyzeRedditDataView(generics.GenericAPIView):
             insights.append(insight)
 
         text_data = titles + descriptions
-        print(text_data)
 
         if not text_data:
             response_data = {
